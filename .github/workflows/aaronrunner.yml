@@ -4,9 +4,9 @@ jobs:
   DeployingPipline: 
     runs-on: self-hosted
     steps: 
-      - name: "cleaning for aaron"
-        run: |
-          rm -rf ./ticketsrus-aaron-bryce-carlos
+      # - name: "cleaning for aaron"
+      #   run: |
+      #     rm -rf ./ticketsrus-aaron-bryce-carlos
       - name: "clone"
         run: git clone https://${{secrets.AARON_MAR_SECRET}}@github.com/AaronForSnow/ticketsrus-aaron-bryce-carlos.git
       #TODO: uncomment Linting
