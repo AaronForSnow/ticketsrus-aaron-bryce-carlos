@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: aaron
+  name: blazor-web-deployment
+  labels:
+    app: blazor-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: blazor-web
+  template:
+    metadata:
+      labels:
+        app: blazor-web
+    spec:
+      containers:
+      - name: blazor-web
+        image: 144.17.92.12:5000/aaron/blazor-web:${GITHUB_RUN_ID}
+        ports:
+        - containerPort: 80
+        env:
+        - name: Postgres ##THis is the connection string that gets put in the blazor program.cs
+          value: Server=blazor-web-db-pvc;password=postgres;user id=aarondbuser;

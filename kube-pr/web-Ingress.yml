@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: aaron
+  name: blazor-web-ingress
+spec:
+  ingressClassName: blazor-web
+  rules:
+  - host: blazor-web.aaron-kube.duckdns.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: blazor-web-service
+            port:
+              number: 80

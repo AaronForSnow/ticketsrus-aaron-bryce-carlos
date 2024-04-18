@@ -13,7 +13,18 @@ jobs:
       - name: deploy kubernetes environment
         run: |
           export PULL_REQUEST_ID=${{ github.event.pull_request.number }}
+          export NAMESPACE="aaron-pr-$PULL_REQUEST_ID"
           kubectl create namespace aaron-pr-$PULL_REQUEST_ID || true
           
           kubectl -n aaron-pr-$PULL_REQUEST_ID delete configmap blazor-weg-postgres-init || true
           kubectl -n aaron-pr-$PULL_REQUEST_ID create configmap blazor-web-postgres-init --from-file=TestTicket/20240215.01.21.01.sql
+
+          export RUN_SALT="pr-${PULL_REQUEST_ID}-${GITHUB_RUN_ID}"
+          docker build -t 144.17.92.12:5000/aaron/blazor-web:$RUN-SALT
+          docker push 144.17.92:5000/aaron/blazor-web:$RUN_SALT
+
+
+          for file in ./kube-pr/*; do
+            echo "Apployint $file"
+            cat $file | envsubst | kubectl apploy -f -
+          done
